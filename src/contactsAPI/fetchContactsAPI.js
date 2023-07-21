@@ -6,14 +6,14 @@ export const getContacts = async () => {
     if (!contacts.ok) {
       throw new Error(contacts.statusText);
     }
-    contacts = await contacts.json();
-    console.log('🚀  contacts:', contacts);
+
+    return contacts.json();
   } catch (error) {
     console.log(error.message);
   }
 };
 
-export const addContact = async contact => {
+export const addContactToDatabase = async contact => {
   try {
     let request = await fetch(
       'https://64ba30d55e0670a501d5c7d8.mockapi.io/contacts/contacts',

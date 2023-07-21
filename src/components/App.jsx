@@ -4,11 +4,16 @@ import { AddContactForm } from './AddContactForm/AddContactForm';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, removeContact } from '../redux/contactsSlice';
-import { addContact as putContact } from '../contactsAPI/fetchContactsAPI';
+import {
+  addContact,
+  fetchContacts,
+  removeContact,
+} from '../redux/contactsSlice';
 import { filtered } from '../redux/filterSlice';
+import { useEffect } from 'react';
 
 export const App = () => {
+  //----------------------------------------------------------------
   const contacts = useSelector(store => {
     return store.contacts.items;
   });
@@ -19,6 +24,12 @@ export const App = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchContacts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //----------------------------------------------------------------
   const addContactFunction = formState => {
     const { name, number } = formState;
     const contact = { name, number, id: nanoid(4) };

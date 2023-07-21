@@ -1,10 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getContacts } from 'contactsAPI/fetchContactsAPI';
 
 const initialState = {
-  items: [{ id: 555, name: 'John', number: 1 }],
+  items: [],
   isLoading: false,
   error: null,
 };
+
+//----------------------------------------------------------------
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getContacts();
+
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+//----------------------------------------------------------------
 
 export const contactsSlice = createSlice({
   name: 'contacts',
@@ -18,6 +34,14 @@ export const contactsSlice = createSlice({
         contact => action.payload !== contact.id
       );
     },
+  },
+  extraReducers: {
+    [fetchContacts.pending]: (state, action) => {},
+    [fetchContacts.fulfilled]: (state, action) => {
+      console.log('reducer', action.payload);
+      state.items = action.payload;
+    },
+    [fetchContacts.rejected]: (state, action) => {},
   },
 });
 
