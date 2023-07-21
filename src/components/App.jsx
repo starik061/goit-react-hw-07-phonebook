@@ -6,6 +6,7 @@ import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addContact,
+  addContactThunk,
   fetchContacts,
   removeContact,
 } from '../redux/contactsSlice';
@@ -30,9 +31,10 @@ export const App = () => {
   }, []);
 
   //----------------------------------------------------------------
+
   const addContactFunction = formState => {
     const { name, number } = formState;
-    const contact = { name, number, id: nanoid(4) };
+    const contact = { name, phone: number };
 
     let isNameInContacts = contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -42,7 +44,7 @@ export const App = () => {
       return;
     }
 
-    dispatch(addContact(contact));
+    dispatch(addContactThunk(contact));
   };
 
   const changeFilter = event => {
