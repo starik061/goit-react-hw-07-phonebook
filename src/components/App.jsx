@@ -9,7 +9,7 @@ import { filtered } from '../redux/filterSlice';
 
 export const App = () => {
   const contacts = useSelector(store => {
-    return store.contacts;
+    return store.contacts.items;
   });
   const filterState = useSelector(store => {
     return store.filtered;
