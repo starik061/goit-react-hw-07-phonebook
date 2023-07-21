@@ -6,13 +6,14 @@ export class ContactsList extends Component {
     return (
       <>
         <ul>
-          {this.props.contacts.map(contact => (
-            <ContactsListItem
-              key={contact.id}
-              contact={contact}
-              onDeleteButton={this.props.onDeleteButton}
-            />
-          ))}
+          {this.props.contacts.length > 0 &&
+            this.props.contacts.map(contact => (
+              <ContactsListItem
+                key={contact.id}
+                contact={contact}
+                onDeleteButton={this.props.onDeleteButton}
+              />
+            ))}
         </ul>
       </>
     );

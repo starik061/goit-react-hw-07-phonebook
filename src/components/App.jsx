@@ -11,6 +11,7 @@ export const App = () => {
   const contacts = useSelector(store => {
     return store.contacts.items;
   });
+
   const filterState = useSelector(store => {
     return store.filtered;
   });
@@ -41,7 +42,7 @@ export const App = () => {
   };
 
   const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filterState.toLowerCase())
+    contact?.name.toLowerCase().includes(filterState.toLowerCase())
   );
 
   return (
