@@ -13,10 +13,9 @@ export const fetchContacts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getContacts();
-
       return response;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -36,12 +35,19 @@ export const contactsSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchContacts.pending]: (state, action) => {},
+    [fetchContacts.pending]: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    },
     [fetchContacts.fulfilled]: (state, action) => {
-      console.log('reducer', action.payload);
+      state.isLoading = false;
+      state.error = null;
       state.items = action.payload;
     },
-    [fetchContacts.rejected]: (state, action) => {},
+    [fetchContacts.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
