@@ -1,22 +1,25 @@
-import React, { Component } from 'react';
-export class ContactsListItem extends Component {
-  render() {
-    return (
-      <>
-        <li>
-          <span>
-            {this.props.contact.name}: {this.props.contact.number}
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              this.props.onDeleteButton(this.props.contact.id);
-            }}
-          >
-            Delete
-          </button>
-        </li>
-      </>
-    );
-  }
-}
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+export const ContactsListItem = ({ contact, onDeleteButton }) => {
+  const isLoading = useSelector(state => state.contacts.isLoading);
+
+  return (
+    <>
+      <li>
+        <span>
+          {contact.name}: {contact.number}
+        </span>
+        <button
+          disabled={isLoading}
+          type="button"
+          onClick={() => {
+            onDeleteButton(contact.id);
+          }}
+        >
+          Delete
+        </button>
+      </li>
+    </>
+  );
+};

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   addContactToDatabase,
   getContacts,
+  removeContactFromDatabase,
 } from 'contactsAPI/fetchContactsAPI';
 
 const initialState = {
@@ -35,6 +36,18 @@ export const addContactThunk = createAsyncThunk(
     }
   }
 );
+
+export const deleteContactThunk = createAsyncThunk(
+  'contacts/deleteContact',
+  async (contactId, { rejectWithValue, dispatch }) => {
+    try {
+      await removeContactFromDatabase(contactId);
+      dispatch(removeContact(contactId));
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
 //----------------------------------------------------------------
 
 export const contactsSlice = createSlice({
@@ -61,7 +74,7 @@ export const contactsSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-
+    //---------------------------------------------------------------
     [addContactThunk.pending]: (state, action) => {
       state.isLoading = true;
       state.error = null;
@@ -73,6 +86,19 @@ export const contactsSlice = createSlice({
       state.items.push(action.payload);
     },
     [addContactThunk.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    //---------------------------------------------------------------
+    [deleteContactThunk.pending]: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [deleteContactThunk.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+    },
+    [deleteContactThunk.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },

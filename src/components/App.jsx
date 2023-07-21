@@ -1,14 +1,11 @@
-import { nanoid } from '@reduxjs/toolkit';
-
 import { AddContactForm } from './AddContactForm/AddContactForm';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  addContact,
   addContactThunk,
+  deleteContactThunk,
   fetchContacts,
-  removeContact,
 } from '../redux/contactsSlice';
 import { filtered } from '../redux/filterSlice';
 import { useEffect } from 'react';
@@ -52,7 +49,7 @@ export const App = () => {
   };
 
   const deleteContact = contactId => {
-    dispatch(removeContact(contactId));
+    dispatch(deleteContactThunk(contactId));
   };
 
   const filteredContacts = contacts.filter(contact =>
